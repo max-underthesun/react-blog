@@ -21,5 +21,5 @@ ReactDOM.render(
       alt: "Large image"
     }
   ),
-  document.getElementById('app')
+  document.getElementById('image-div')
 );
