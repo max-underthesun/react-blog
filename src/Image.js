@@ -1,15 +1,6 @@
 const DOM = React.DOM;
 
-const Image = (props) => (
-  DOM.img(
-    {
-      src: props.src,
-      width: props.width,
-      height: props.height,
-      style: {border: '1px solid red'}
-    }
-  )
-);
+const Image = (props) => (DOM.img(props));
 
 ReactDOM.render(
   React.createElement(

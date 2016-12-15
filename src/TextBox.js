@@ -2,7 +2,7 @@ const DOM = React.DOM;
 
 const TextBox = (props) => (
   DOM.span(
-    { style: {border: '2px solid green'} },
+    { style: { border: '2px solid red' } },
     props.string
   )
 );
