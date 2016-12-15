@@ -14,17 +14,29 @@ const BlogItem = (props) => (
 );
 
 ReactDOM.render(
-  React.createElement(
-    BlogItem,
-    {
-      image: {
-        src: "https://js.cx/gallery/img1-lg.jpg",
-        width: "500px",
-        height: "400px",
-        alt: "Large image"
-      },
-      text: { string: "Here is the string for a TextBox" }
-    }
+  DOM.div(
+    null,
+    React.createElement(
+      BlogItem,
+      {
+        image: { src: "https://js.cx/gallery/img1-lg.jpg", width: "250px", height: "200px" },
+        text: { string: "Here is the string for a TextBox" }
+      }
+    ),
+    React.createElement(
+      BlogItem,
+      { 
+        image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "250px", height: "200px" },
+        text: { string: "Second string for a TextBox" }
+      }
+    ),
+    React.createElement(
+      BlogItem,
+      { 
+        image: { src: "https://js.cx/gallery/img3-lg.jpg", width: "250px", height: "200px" },
+        text: { string: "And the third string..." }
+      }
+    )
   ),
   document.getElementById('blog-item-div')
 );
