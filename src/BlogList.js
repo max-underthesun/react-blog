@@ -28,7 +28,7 @@ const items = [
   }
 ];
 
-class ItemsContainer extends React.Component {
+class BlogPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items };
@@ -53,6 +53,6 @@ const BlogList = ({ items }) => (
 );
 
 ReactDOM.render(
-  React.createElement(ItemsContainer),
+  React.createElement(BlogPage),
   document.getElementById('app')
 );
