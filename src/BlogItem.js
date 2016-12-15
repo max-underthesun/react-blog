@@ -38,5 +38,5 @@ ReactDOM.render(
       }
     )
   ),
-  document.getElementById('blog-item-div')
+  document.getElementById('app')
 );

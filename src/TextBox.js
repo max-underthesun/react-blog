@@ -12,5 +12,5 @@ ReactDOM.render(
     TextBox,
     { string: "Here is the string for a TextBox" }
   ),
-  document.getElementById('text-box-div')
+  document.getElementById('app')
 );
