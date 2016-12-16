@@ -3,14 +3,14 @@ const DOM = React.DOM;
 const TextBox = (props) => (
   DOM.span(
     { style: { border: '2px solid red' } },
-    props.string
+    props.post
   )
 );
 
 ReactDOM.render(
   React.createElement(
     TextBox,
-    { string: "Here is the string for a TextBox" }
+    { post: "Here is the post for a TextBox" }
   ),
   document.getElementById('app')
 );
