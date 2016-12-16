@@ -1,8 +1,9 @@
+// the final version
 const DOM = React.DOM;
 
 const Image = (props) => (DOM.img(props));
 const TextBox = (props) => (
-  DOM.span({ style: { border: '2px solid red' } }, props.string)
+  DOM.span({ style: { border: '2px solid red' } }, props.post)
 );
 
 const BlogItem = (props) => (
@@ -16,15 +17,15 @@ const BlogItem = (props) => (
 const items = [
   {
     image: { src: "https://js.cx/gallery/img1-lg.jpg", width: "250px", height: "200px" },
-    text: { string: "Here is the string for a TextBox" }
+    text: { post: "Here is the post for a TextBox" }
   },
-  { 
+  {
     image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "250px", height: "200px" },
-    text: { string: "Second string for a TextBox" }
+    text: { post: "Second post for a TextBox" }
   },
-  { 
+  {
     image: { src: "https://js.cx/gallery/img3-lg.jpg", width: "250px", height: "200px" },
-    text: { string: "And the third string..." }
+    text: { post: "And the third post..." }
   }
 ];
 
