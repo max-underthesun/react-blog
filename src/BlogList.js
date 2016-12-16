@@ -1,3 +1,4 @@
+// the final version
 const DOM = React.DOM;
 
 const Image = (props) => (DOM.img(props));
