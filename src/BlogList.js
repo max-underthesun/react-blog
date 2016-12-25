@@ -126,6 +126,30 @@ const MetaBox3 = (props) => (
   )
 );
 
+class Like extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { count: props.count };
+
+    this.handleClick = bind(this.handleClick, this);
+  }
+
+  handleClick(e) {
+    // const step = e.shiftKey ? 10 : 1;
+    const step = 1;
+    this.setState({ count: this.state.count + step });
+  }
+
+  render() {
+    return DOM.span(
+      { style: { border: '1px solid magenta', margin: '10px' } },
+      DOM.span({ style: { margin: '5px', fontWeight: 'bold' } }, 'Like: '),
+      DOM.span({ style: { margin: '5px' } }, this.state.count),
+      DOM.button({ onClick: this.handleClick }, '+')
+    );
+  }
+}
+
 const BlogItem = (props) => (
   DOM.div(
     { style: { border: '3px solid green', margin: '10px' } },
@@ -135,7 +159,8 @@ const BlogItem = (props) => (
     React.createElement(MetaBox1, props.meta),
     React.createElement(MetaBox2, props.meta),
     React.createElement(MetaData1, props.meta),
-    React.createElement(MetaData2, props.meta)
+    React.createElement(MetaData2, props.meta),
+    React.createElement(Like, props.meta)
   )
 );
 
@@ -143,17 +168,17 @@ const items = [
   {
     image: { src: "https://js.cx/gallery/img1-lg.jpg", width: "250px", height: "200px" },
     text: { post: "Here is the post for a TextBox. Here is the post for a TextBox" },
-    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date() }
+    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 5 }
   },
   {
     image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "250px", height: "200px" },
     text: { post: "Second post for a TextBox" },
-    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date() }
+    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 7 }
   },
   {
     image: { src: "https://js.cx/gallery/img3-lg.jpg", width: "250px", height: "200px" },
     text: { post: "And the third post..." },
-    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date() }
+    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 13 }
   }
 ];
 
