@@ -25,14 +25,14 @@ ReactDOM.render(
     ),
     React.createElement(
       BlogItem,
-      { 
+      {
         image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "250px", height: "200px" },
         text: { post: "Second post for a TextBox" }
       }
     ),
     React.createElement(
       BlogItem,
-      { 
+      {
         image: { src: "https://js.cx/gallery/img3-lg.jpg", width: "250px", height: "200px" },
         text: { post: "And the third post..." }
       }
