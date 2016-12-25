@@ -11,7 +11,12 @@ const Image = ({ src, width, height }) => (
         margin: '10px',
         padding: '5px',
         maxWidth: '30%',
-        height: '100%',
+        // width: width,
+        // width: '30%',
+        minWidth: width,
+        minHeight: height,
+        // height: height,
+        // height: '100%',
         display: 'inline-block'
       }
     },
@@ -26,12 +31,37 @@ const TextBox = (props) => (
         border: '2px solid red',
         margin: '10px',
         padding: '5px',
-        maxWidth: '60%',
+        width: '60%',
+        // minWidth: '30%',
+        // maxWidth: '50%',
+        // maxWidth: '100%',
+        // height: '100%',
+        // position: 'relative',
         display: 'inline-block',
         verticalAlign: 'top'
       }
     },
     props.post
+  )
+);
+
+const BlogItem = (props) => (
+  DOM.div(
+    { style: { border: '3px solid green', margin: '10px', height: '100%' } },
+    DOM.div(
+      { style: { border: '3px solid orange', margin: '10px', height: '100%', overflow: 'hidden' } },
+      React.createElement(Image, props.image),
+      React.createElement(TextBox, props.text)
+    ),
+    // React.createElement(Image, props.image),
+    // React.createElement(TextBox, props.text),
+    DOM.br(null),
+    React.createElement(MetaBox1, props.meta),
+    React.createElement(MetaBox2, props.meta),
+    React.createElement(MetaData1, props.meta),
+    React.createElement(MetaData2, props.meta),
+    React.createElement(Like, props.meta),
+    React.createElement(Like2, props.meta)
   )
 );
 
@@ -206,33 +236,15 @@ const LikeBox = (props) => (
   )
 );
 
-const BlogItem = (props) => (
-  DOM.div(
-    { style: { border: '3px solid green', margin: '10px' } },
-    DOM.div(
-      { style: { border: '3px solid orange', margin: '10px' } },
-      React.createElement(Image, props.image),
-      React.createElement(TextBox, props.text)
-    ),
-    // React.createElement(Image, props.image),
-    // React.createElement(TextBox, props.text),
-    DOM.br(null),
-    React.createElement(MetaBox1, props.meta),
-    React.createElement(MetaBox2, props.meta),
-    React.createElement(MetaData1, props.meta),
-    React.createElement(MetaData2, props.meta),
-    React.createElement(Like, props.meta),
-    React.createElement(Like2, props.meta)
-  )
-);
-
 const items = [
   {
     image: { src: "https://js.cx/gallery/img1-lg.jpg", width: "250px", height: "200px" },
     text: {
       post:
         `Here is the post for a TextBox. Here is the post for a TextBox.
-         Here is the post for a TextBox. Here is the post for a TextBox`
+         Here is the post for a TextBox. Here is the post for a TextBox.
+         Here is the post for a TextBox. Here is the post for a TextBox.
+         Here is the post for a TextBox. Here is the post for a TextBox.`
     },
     meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 5 }
   },
