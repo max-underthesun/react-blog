@@ -2,9 +2,37 @@
 const DOM = React.DOM;
 const { bind, assign } = _;
 
-const Image = (props) => (DOM.img(props));
+// const Image = (props) => (DOM.img(props));
+const Image = ({ src, width, height }) => (
+  DOM.div(
+    { style:
+      {
+        border: '2px solid red',
+        margin: '10px',
+        padding: '5px',
+        maxWidth: '30%',
+        height: '100%',
+        display: 'inline-block'
+      }
+    },
+    DOM.img({ src, width, height })
+  )
+);
+
 const TextBox = (props) => (
-  DOM.span({ style: { border: '2px solid red', margin: '10px' } }, props.post)
+  DOM.div(
+    { style:
+      {
+        border: '2px solid red',
+        margin: '10px',
+        padding: '5px',
+        maxWidth: '60%',
+        display: 'inline-block',
+        verticalAlign: 'top'
+      }
+    },
+    props.post
+  )
 );
 
 const MetaBox1 = (props) => (
@@ -181,8 +209,13 @@ const LikeBox = (props) => (
 const BlogItem = (props) => (
   DOM.div(
     { style: { border: '3px solid green', margin: '10px' } },
-    React.createElement(Image, props.image),
-    React.createElement(TextBox, props.text),
+    DOM.div(
+      { style: { border: '3px solid orange', margin: '10px' } },
+      React.createElement(Image, props.image),
+      React.createElement(TextBox, props.text)
+    ),
+    // React.createElement(Image, props.image),
+    // React.createElement(TextBox, props.text),
     DOM.br(null),
     React.createElement(MetaBox1, props.meta),
     React.createElement(MetaBox2, props.meta),
@@ -196,7 +229,11 @@ const BlogItem = (props) => (
 const items = [
   {
     image: { src: "https://js.cx/gallery/img1-lg.jpg", width: "250px", height: "200px" },
-    text: { post: "Here is the post for a TextBox. Here is the post for a TextBox" },
+    text: {
+      post:
+        `Here is the post for a TextBox. Here is the post for a TextBox.
+         Here is the post for a TextBox. Here is the post for a TextBox`
+    },
     meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 5 }
   },
   {
