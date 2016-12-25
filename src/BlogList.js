@@ -1,30 +1,47 @@
 // the final version
 const DOM = React.DOM;
+const { bind, assign } = _;
 
 const Image = (props) => (DOM.img(props));
 const TextBox = (props) => (
   DOM.span({ style: { border: '2px solid red', margin: '10px' } }, props.post)
 );
 
-const MetaItem = (props) => (
-  // DOM.span({ style: { margin: '10px'} }, props)
-  DOM.p({ style: { margin: '10px'} },
-    DOM.span({ style: { color: 'grey'} }, `${props.title}: `),
-    DOM.span(null, `${props.value}`)
+const MetaBox1 = (props) => (
+  DOM.div(
+    { style: { border: '2px solid blue', margin: '10px' } },
+    DOM.p(
+      { style: { margin: '10px'} },
+      DOM.span({ style: { color: 'grey'} }, 'Author: '),
+      DOM.span(null, `${props.author}`)
+    ),
+    DOM.p(
+      { style: { margin: '10px'} },
+      DOM.span({ style: { color: 'purple'} }, 'Created: '),
+      DOM.span(null, `${props.createdAt.format('MMMM Do YYYY, h:mm:ss a')}`)
+     ),
+    DOM.p(
+      { style: { margin: '10px'} },
+      DOM.span({ style: { color: 'orange'} }, 'Updated: '),
+      DOM.span(null, `${props.createdAt}`)
+    )
   )
 );
 
-const MetaBox = (props) => (
+const MetaItem = (props) => (
+  // DOM.span({ style: { margin: '10px'} }, props)
+  DOM.p({ style: { margin: '10px'} },
+  DOM.span({ style: { color: 'grey'} }, `${props.title}: `),
+  DOM.span(null, `${props.value}`)
+)
+);
+
+const MetaBox2 = (props) => (
   DOM.div(
     { style: { border: '2px solid blue', margin: '10px' } },
-    // DOM.span({ style: { margin: '10px'} }, `Author: ${props.author}`),
-    // DOM.span({ style: { margin: '10px'} }, `Created: ${props.createdAt}`),
-    // DOM.span({ style: { margin: '10px'} }, `Updated: ${props.updatedAt}`)
-
     // React.createElement(MetaItem, `Author: ${props.author}`),
     // React.createElement(MetaItem, `Created: ${props.createdAt}`),
     // React.createElement(MetaItem, `Created: ${props.updatedAt}`)
-
     React.createElement(MetaItem, { title: 'Author', value: props.author }),
     React.createElement(MetaItem, { title: 'Created', value: props.createdAt.format('MMMM Do YYYY, h:mm:ss a') }),
     React.createElement(
@@ -47,9 +64,10 @@ const MetaBox = (props) => (
   )
 );
 
-class MetaData extends React.Component {
+class MetaData1 extends React.Component {
   constructor(props) {
     super(props);
+    this.state = props;
     var options = {
       year: 'numeric',
       month: 'long',
@@ -59,6 +77,7 @@ class MetaData extends React.Component {
       second: 'numeric'
     };
     this.state = {};
+    this.state = assign({}, props);
     this.state.author = props.author;
     this.state.createdAt = props.createdAt.format('MMMM Do YYYY, h:mm:ss a');
     this.state.updatedAt = props.updatedAt.toLocaleString("en-US", options);
@@ -66,11 +85,39 @@ class MetaData extends React.Component {
 
   render() {
     const props = this.state;
-    return React.createElement(MetaBox2, props);
+    return React.createElement(MetaBox3, props);
   }
 }
 
-const MetaBox2 = (props) => (
+class MetaData2 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = props;
+  }
+
+  props_formatted() {
+    var options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    };
+    var props_formatted = {
+      author: this.state.author,
+      createdAt: this.state.createdAt.format('MMMM Do YYYY, h:mm:ss a'),
+      updatedAt: this.state.updatedAt.toLocaleString("en-US", options)
+    };
+    return props_formatted;
+  }
+
+  render() {
+    return React.createElement(MetaBox3, this.props_formatted());
+  }
+}
+
+const MetaBox3 = (props) => (
   DOM.div(
     { style: { border: '2px solid blue', margin: '10px' } },
     React.createElement(MetaItem, { title: 'Author', value: props.author }),
@@ -85,8 +132,10 @@ const BlogItem = (props) => (
     React.createElement(Image, props.image),
     React.createElement(TextBox, props.text),
     DOM.br(null),
-    React.createElement(MetaBox, props.meta),
-    React.createElement(MetaData, props.meta)
+    React.createElement(MetaBox1, props.meta),
+    React.createElement(MetaBox2, props.meta),
+    React.createElement(MetaData1, props.meta),
+    React.createElement(MetaData2, props.meta)
   )
 );
 
