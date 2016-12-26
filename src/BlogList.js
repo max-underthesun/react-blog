@@ -120,11 +120,11 @@ const BlogItem = ({ image, text, meta }) => (
     // React.createElement(Image, props.image),
     // React.createElement(TextBox, props.text),
     DOM.br(null),
-    React.createElement(MetaBox1, meta),
-    React.createElement(MetaBox2, meta),
-    React.createElement(MetaData1, meta),
+    // React.createElement(MetaBox1, meta),
+    // React.createElement(MetaBox2, meta),
+    // React.createElement(MetaData1, meta),
     React.createElement(MetaData2, meta),
-    React.createElement(Like, meta),
+    // React.createElement(Like, meta),
     React.createElement(Like2, meta)
   )
 );
@@ -135,26 +135,26 @@ BlogItem.propTypes = {
   meta: PropTypes.object
 };
 
-const MetaBox1 = (props) => (
-  DOM.div(
-    { style: { border: '2px solid blue', margin: '10px' } },
-    DOM.p(
-      { style: { margin: '10px'} },
-      DOM.span({ style: { color: 'grey'} }, 'Author: '),
-      DOM.span(null, `${props.author}`)
-    ),
-    DOM.p(
-      { style: { margin: '10px'} },
-      DOM.span({ style: { color: 'purple'} }, 'Created: '),
-      DOM.span(null, `${props.createdAt.format('MMMM Do YYYY, h:mm:ss a')}`)
-     ),
-    DOM.p(
-      { style: { margin: '10px'} },
-      DOM.span({ style: { color: 'orange'} }, 'Updated: '),
-      DOM.span(null, `${props.createdAt}`)
-    )
-  )
-);
+// const MetaBox1 = (props) => (
+//   DOM.div(
+//     { style: { border: '2px solid blue', margin: '10px' } },
+//     DOM.p(
+//       { style: { margin: '10px'} },
+//       DOM.span({ style: { color: 'grey'} }, 'Author: '),
+//       DOM.span(null, `${props.author}`)
+//     ),
+//     DOM.p(
+//       { style: { margin: '10px'} },
+//       DOM.span({ style: { color: 'purple'} }, 'Created: '),
+//       DOM.span(null, `${props.createdAt.format('MMMM Do YYYY, h:mm:ss a')}`)
+//      ),
+//     DOM.p(
+//       { style: { margin: '10px'} },
+//       DOM.span({ style: { color: 'orange'} }, 'Updated: '),
+//       DOM.span(null, `${props.createdAt}`)
+//     )
+//   )
+// );
 
 const MetaItem = (props) => (
   // DOM.span({ style: { margin: '10px'} }, props)
@@ -164,58 +164,58 @@ const MetaItem = (props) => (
 )
 );
 
-const MetaBox2 = (props) => (
-  DOM.div(
-    { style: { border: '2px solid blue', margin: '10px' } },
-    // React.createElement(MetaItem, `Author: ${props.author}`),
-    // React.createElement(MetaItem, `Created: ${props.createdAt}`),
-    // React.createElement(MetaItem, `Created: ${props.updatedAt}`)
-    React.createElement(MetaItem, { title: 'Author', value: props.author }),
-    React.createElement(MetaItem, { title: 'Created', value: props.createdAt.format('MMMM Do YYYY, h:mm:ss a') }),
-    React.createElement(
-      MetaItem,
-      {
-        title: 'Updated',
-        value: props.updatedAt.toLocaleString(
-          "en-US",
-          {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric'
-          }
-        )
-      }
-    )
-  )
-);
-
-class MetaData1 extends React.Component {
-  constructor(props) {
-    super();
-    this.state = props;
-    var options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
-    };
-    this.state = {};
-    this.state = assign({}, props);
-    this.state.author = props.author;
-    this.state.createdAt = props.createdAt.format('MMMM Do YYYY, h:mm:ss a');
-    this.state.updatedAt = props.updatedAt.toLocaleString("en-US", options);
-  }
-
-  render() {
-    const props = this.state;
-    return React.createElement(MetaBox3, props);
-  }
-}
+// const MetaBox2 = (props) => (
+//   DOM.div(
+//     { style: { border: '2px solid blue', margin: '10px' } },
+//     // React.createElement(MetaItem, `Author: ${props.author}`),
+//     // React.createElement(MetaItem, `Created: ${props.createdAt}`),
+//     // React.createElement(MetaItem, `Created: ${props.updatedAt}`)
+//     React.createElement(MetaItem, { title: 'Author', value: props.author }),
+//     React.createElement(MetaItem, { title: 'Created', value: props.createdAt.format('MMMM Do YYYY, h:mm:ss a') }),
+//     React.createElement(
+//       MetaItem,
+//       {
+//         title: 'Updated',
+//         value: props.updatedAt.toLocaleString(
+//           "en-US",
+//           {
+//             year: 'numeric',
+//             month: 'long',
+//             day: 'numeric',
+//             hour: 'numeric',
+//             minute: 'numeric',
+//             second: 'numeric'
+//           }
+//         )
+//       }
+//     )
+//   )
+// );
+//
+// class MetaData1 extends React.Component {
+//   constructor(props) {
+//     super();
+//     this.state = props;
+//     var options = {
+//       year: 'numeric',
+//       month: 'long',
+//       day: 'numeric',
+//       hour: 'numeric',
+//       minute: 'numeric',
+//       second: 'numeric'
+//     };
+//     this.state = {};
+//     this.state = assign({}, props);
+//     this.state.author = props.author;
+//     this.state.createdAt = props.createdAt.format('MMMM Do YYYY, h:mm:ss a');
+//     this.state.updatedAt = props.updatedAt.toLocaleString("en-US", options);
+//   }
+//
+//   render() {
+//     const props = this.state;
+//     return React.createElement(MetaBox3, props);
+//   }
+// }
 
 class MetaData2 extends React.Component {
   // constructor({ author, createdAt, updatedAt }) {
@@ -273,28 +273,28 @@ MetaData2.defaultProps = {
   author: "** anonimus **"
 };
 
-class Like extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { count: props.count };
-
-    this.handleClick = bind(this.handleClick, this);
-  }
-
-  handleClick(e) {
-    const step = 1;
-    this.setState({ count: this.state.count + step });
-  }
-
-  render() {
-    return DOM.span(
-      { style: { border: '1px solid magenta', margin: '10px' } },
-      DOM.span({ style: { margin: '5px', fontWeight: 'bold' } }, 'Like: '),
-      DOM.span({ style: { margin: '5px' } }, this.state.count),
-      DOM.button({ onClick: this.handleClick }, '+')
-    );
-  }
-}
+// class Like extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = { count: props.count };
+//
+//     this.handleClick = bind(this.handleClick, this);
+//   }
+//
+//   handleClick(e) {
+//     const step = 1;
+//     this.setState({ count: this.state.count + step });
+//   }
+//
+//   render() {
+//     return DOM.span(
+//       { style: { border: '1px solid magenta', margin: '10px' } },
+//       DOM.span({ style: { margin: '5px', fontWeight: 'bold' } }, 'Like: '),
+//       DOM.span({ style: { margin: '5px' } }, this.state.count),
+//       DOM.button({ onClick: this.handleClick }, '+')
+//     );
+//   }
+// }
 
 class Like2 extends React.Component {
   constructor(props) {
