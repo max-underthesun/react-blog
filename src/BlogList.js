@@ -101,8 +101,8 @@ const BlogItem = ({ image, text, meta }) => (
       React.createElement(TextBox, text)
     ),
     DOM.br(null),
-    React.createElement(MetaData2, meta),
-    React.createElement(Like2, meta)
+    React.createElement(MetaData, meta),
+    React.createElement(Like, meta)
   )
 );
 
@@ -112,7 +112,7 @@ BlogItem.propTypes = {
   meta: PropTypes.object
 };
 
-class MetaData2 extends React.Component {
+class MetaData extends React.Component {
   constructor(props) {
     super();
     this.state = { updatedAt: props.updatedAt };
@@ -136,21 +136,21 @@ class MetaData2 extends React.Component {
   }
 
   render() {
-    return React.createElement(MetaBox3, this.props_formatted());
+    return React.createElement(MetaBox, this.props_formatted());
   }
 }
 
-MetaData2.propTypes = {
+MetaData.propTypes = {
   author: PropTypes.string,
   createdAt: PropTypes.instanceOf(moment),
   updatedAt: PropTypes.instanceOf(Date)
 };
 
-MetaData2.defaultProps = {
+MetaData.defaultProps = {
   author: "** anonimus **"
 };
 
-const MetaBox3 = ({ author, createdAt, updatedAt }) => (
+const MetaBox = ({ author, createdAt, updatedAt }) => (
   DOM.div(
     { style: metaBoxStyle },
     React.createElement(MetaItem, { title: 'Author', value: author }),
@@ -167,7 +167,7 @@ const MetaItem = (props) => (
   )
 );
 
-class Like2 extends React.Component {
+class Like extends React.Component {
   constructor(props) {
     super(props);
     this.state = { count: props.count };
