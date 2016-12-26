@@ -1,5 +1,6 @@
 // the final version
-const DOM = React.DOM;
+// const DOM = React.DOM;
+const { DOM, PropTypes } = React;
 const { bind, assign } = _;
 
 // const Image = (props) => (DOM.img(props));
@@ -24,7 +25,19 @@ const Image = ({ src, width, height }) => (
   )
 );
 
-const TextBox = (props) => (
+Image.propTypes = {
+  src: PropTypes.string,
+  width: PropTypes.string,
+  height: PropTypes.string
+};
+
+Image.defaultProps = {
+  src: "https://js.cx/gallery/img6-lg.jpg",
+  width: "250px",
+  height: "200px"
+};
+
+const TextBox = ({ post }) => (
   DOM.div(
     { style:
       {
@@ -41,29 +54,43 @@ const TextBox = (props) => (
         verticalAlign: 'top'
       }
     },
-    props.post
+    post
   )
 );
 
-const BlogItem = (props) => (
+TextBox.propTypes = {
+  post: PropTypes.string
+};
+
+TextBox.defaultProps = {
+  post: "** empty entry **"
+};
+
+const BlogItem = ({ image, text, meta }) => (
   DOM.div(
     { style: { border: '3px solid green', margin: '10px', height: '100%' } },
     DOM.div(
       { style: { border: '3px solid orange', margin: '10px', height: '100%', overflow: 'hidden' } },
-      React.createElement(Image, props.image),
-      React.createElement(TextBox, props.text)
+      React.createElement(Image, image),
+      React.createElement(TextBox, text)
     ),
     // React.createElement(Image, props.image),
     // React.createElement(TextBox, props.text),
     DOM.br(null),
-    React.createElement(MetaBox1, props.meta),
-    React.createElement(MetaBox2, props.meta),
-    React.createElement(MetaData1, props.meta),
-    React.createElement(MetaData2, props.meta),
-    React.createElement(Like, props.meta),
-    React.createElement(Like2, props.meta)
+    React.createElement(MetaBox1, meta),
+    React.createElement(MetaBox2, meta),
+    React.createElement(MetaData1, meta),
+    React.createElement(MetaData2, meta),
+    React.createElement(Like, meta),
+    React.createElement(Like2, meta)
   )
 );
+
+BlogItem.propTypes = {
+  image: PropTypes.object,
+  text: PropTypes.object,
+  meta: PropTypes.object
+};
 
 const MetaBox1 = (props) => (
   DOM.div(
@@ -124,7 +151,7 @@ const MetaBox2 = (props) => (
 
 class MetaData1 extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = props;
     var options = {
       year: 'numeric',
@@ -148,10 +175,13 @@ class MetaData1 extends React.Component {
 }
 
 class MetaData2 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = props;
-  }
+  // constructor({ author, createdAt, updatedAt }) {
+  // // constructor(props) {
+  //   super();
+  //   this.state = { author, createdAt, updatedAt };
+  //   // this.state = props;
+  //   // this.state = assign({}, props);
+  // }
 
   props_formatted() {
     var options = {
@@ -163,9 +193,12 @@ class MetaData2 extends React.Component {
       second: 'numeric'
     };
     var props_formatted = {
-      author: this.state.author,
-      createdAt: this.state.createdAt.format('MMMM Do YYYY, h:mm:ss a'),
-      updatedAt: this.state.updatedAt.toLocaleString("en-US", options)
+      author: this.props.author,
+      createdAt: this.props.createdAt.format('MMMM Do YYYY, h:mm:ss a'),
+      updatedAt: this.props.updatedAt.toLocaleString("en-US", options)
+      // author: this.state.author,
+      // createdAt: this.state.createdAt.format('MMMM Do YYYY, h:mm:ss a'),
+      // updatedAt: this.state.updatedAt.toLocaleString("en-US", options)
     };
     return props_formatted;
   }
@@ -175,14 +208,24 @@ class MetaData2 extends React.Component {
   }
 }
 
-const MetaBox3 = (props) => (
+const MetaBox3 = ({ author, createdAt, updatedAt }) => (
   DOM.div(
     { style: { border: '2px solid blue', margin: '10px' } },
-    React.createElement(MetaItem, { title: 'Author', value: props.author }),
-    React.createElement(MetaItem, { title: 'Created', value: props.createdAt }),
-    React.createElement(MetaItem, { title: 'Updated', value: props.updatedAt })
+    React.createElement(MetaItem, { title: 'Author', value: author }),
+    React.createElement(MetaItem, { title: 'Created', value: createdAt }),
+    React.createElement(MetaItem, { title: 'Updated', value: updatedAt })
   )
 );
+
+MetaData2.propTypes = {
+  author: PropTypes.string,
+  createdAt: PropTypes.instanceOf(moment),
+  updatedAt: PropTypes.instanceOf(Date)
+};
+
+MetaData2.defaultProps = {
+  author: "** anonimus **"
+};
 
 class Like extends React.Component {
   constructor(props) {
@@ -238,7 +281,7 @@ const LikeBox = (props) => (
 
 const items = [
   {
-    image: { src: "https://js.cx/gallery/img1-lg.jpg", width: "250px", height: "200px" },
+    image: { src: "https://js.cx/gallery/img1-lg.jpg" },
     text: {
       post:
         `Here is the post for a TextBox. Here is the post for a TextBox.
@@ -249,13 +292,14 @@ const items = [
     meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 5 }
   },
   {
-    image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "250px", height: "200px" },
+    image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "300px", height: "240px" },
     text: { post: "Second post for a TextBox" },
-    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 7 }
+    meta: { createdAt: moment(), updatedAt: new Date(), count: 7 }
   },
   {
-    image: { src: "https://js.cx/gallery/img3-lg.jpg", width: "250px", height: "200px" },
-    text: { post: "And the third post..." },
+    // image: { src: "https://js.cx/gallery/img3-lg.jpg", width: "250px", height: "200px" },
+    image: { },
+    text: { },
     meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 13 }
   }
 ];
