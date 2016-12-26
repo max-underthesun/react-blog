@@ -4,24 +4,46 @@ const { DOM, PropTypes } = React;
 const { bind, assign } = _;
 
 // const Image = (props) => (DOM.img(props));
+const imageStyle = {
+  border: '2px solid red',
+  margin: '10px',
+  padding: '5px',
+  maxWidth: '30%',
+  // width: width,
+  // width: '30%',
+  // minWidth: width,
+  // minWidth: props.width,
+  // minHeight: height,
+  // minHeight: props.height,
+  // height: height,
+  // height: '100%',
+  display: 'inline-block'
+};
+
 const Image = ({ src, width, height }) => (
+// const Image = (props) => (
+  // DOM.div(
+  //   { style:
+  //     {
+  //       border: '2px solid red',
+  //       margin: '10px',
+  //       padding: '5px',
+  //       maxWidth: '30%',
+  //       // width: width,
+  //       // width: '30%',
+  //       minWidth: width,
+  //       // minWidth: props.width,
+  //       minHeight: height,
+  //       // minHeight: props.height,
+  //       // height: height,
+  //       // height: '100%',
+  //       display: 'inline-block'
+  //     }
+  //   },
   DOM.div(
-    { style:
-      {
-        border: '2px solid red',
-        margin: '10px',
-        padding: '5px',
-        maxWidth: '30%',
-        // width: width,
-        // width: '30%',
-        minWidth: width,
-        minHeight: height,
-        // height: height,
-        // height: '100%',
-        display: 'inline-block'
-      }
-    },
+    { style: assign({}, imageStyle, { minWidth: width, minHeight: height }) },
     DOM.img({ src, width, height })
+    // DOM.img(props)
   )
 );
 
@@ -37,22 +59,36 @@ Image.defaultProps = {
   height: "200px"
 };
 
+const textBoxStyle = {
+  border: '2px solid red',
+  margin: '10px',
+  padding: '5px',
+  width: '60%',
+  // minWidth: '30%',
+  // maxWidth: '50%',
+  // maxWidth: '100%',
+  // height: '100%',
+  // position: 'relative',
+  display: 'inline-block',
+  verticalAlign: 'top'
+};
+
 const TextBox = ({ post }) => (
   DOM.div(
-    { style:
-      {
-        border: '2px solid red',
-        margin: '10px',
-        padding: '5px',
-        width: '60%',
-        // minWidth: '30%',
-        // maxWidth: '50%',
-        // maxWidth: '100%',
-        // height: '100%',
-        // position: 'relative',
-        display: 'inline-block',
-        verticalAlign: 'top'
-      }
+    { style: textBoxStyle
+      // {
+      //   border: '2px solid red',
+      //   margin: '10px',
+      //   padding: '5px',
+      //   width: '60%',
+      //   // minWidth: '30%',
+      //   // maxWidth: '50%',
+      //   // maxWidth: '100%',
+      //   // height: '100%',
+      //   // position: 'relative',
+      //   display: 'inline-block',
+      //   verticalAlign: 'top'
+      // }
     },
     post
   )
@@ -66,11 +102,18 @@ TextBox.defaultProps = {
   post: "** empty entry **"
 };
 
+const blogItemStyle = {
+  outerWrapper: { border: '3px solid green', margin: '10px', height: '100%' },
+  postWrapper: { border: '3px solid orange', margin: '10px', height: '100%', overflow: 'hidden' }
+};
+
 const BlogItem = ({ image, text, meta }) => (
   DOM.div(
-    { style: { border: '3px solid green', margin: '10px', height: '100%' } },
+    // { style: { border: '3px solid green', margin: '10px', height: '100%' } },
+    { style: blogItemStyle.outerWrapper },
     DOM.div(
-      { style: { border: '3px solid orange', margin: '10px', height: '100%', overflow: 'hidden' } },
+      // { style: { border: '3px solid orange', margin: '10px', height: '100%', overflow: 'hidden' } },
+      { style: blogItemStyle.postWrapper },
       React.createElement(Image, image),
       React.createElement(TextBox, text)
     ),
@@ -208,9 +251,12 @@ class MetaData2 extends React.Component {
   }
 }
 
+const metaBoxStyle = { border: '2px solid blue', margin: '10px' };
+
 const MetaBox3 = ({ author, createdAt, updatedAt }) => (
   DOM.div(
-    { style: { border: '2px solid blue', margin: '10px' } },
+    // { style: { border: '2px solid blue', margin: '10px' } },
+    { style: metaBoxStyle },
     React.createElement(MetaItem, { title: 'Author', value: author }),
     React.createElement(MetaItem, { title: 'Created', value: createdAt }),
     React.createElement(MetaItem, { title: 'Updated', value: updatedAt })
@@ -270,11 +316,20 @@ class Like2 extends React.Component {
   }
 }
 
+const likeBoxStyle = {
+  outerWrapper: { border: '1px solid magenta', margin: '10px' },
+  title: { margin: '5px', fontWeight: 'bold' },
+  count: { margin: '5px' }
+};
+
 const LikeBox = (props) => (
   DOM.span(
-    { style: { border: '1px solid magenta', margin: '10px' } },
-    DOM.span({ style: { margin: '5px', fontWeight: 'bold' } }, 'Like: '),
-    DOM.span({ style: { margin: '5px' } }, props.count),
+    // { style: { border: '1px solid magenta', margin: '10px' } },
+    // DOM.span({ style: { margin: '5px', fontWeight: 'bold' } }, 'Like: '),
+    // DOM.span({ style: { margin: '5px' } }, props.count),
+    { style: likeBoxStyle.outerWrapper },
+    DOM.span({ style: likeBoxStyle.title }, 'Like: '),
+    DOM.span({ style: likeBoxStyle.count }, props.count),
     DOM.button({ onClick: props.handleClick }, '+')
   )
 );
