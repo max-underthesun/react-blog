@@ -47,17 +47,31 @@ const items = [
       Here is the post for a TextBox. Here is the post for a TextBox.
       Here is the post for a TextBox. Here is the post for a TextBox.`
     },
-    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 5 }
+    meta: {
+      author: "Ivan Ivanich",
+      createdAt: '2016-12-29T10:53:54.000Z',
+      updatedAt: '2016-12-29T10:53:54.000Z',
+      count: 5
+    }
   },
   {
     image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "300px", height: "240px" },
     text: { post: "Second post for a TextBox" },
-    meta: { createdAt: moment(), updatedAt: new Date(), count: 7 }
+    meta: {
+      createdAt: '2016-12-29T10:53:54.000Z',
+      updatedAt: '2016-12-29T10:53:54.000Z',
+      count: 7
+    }
   },
   {
     image: { },
     text: { },
-    meta: { author: "Ivan Ivanich", createdAt: moment(), updatedAt: new Date(), count: 13 }
+    meta: {
+      author: "Ivan Ivanich",
+      createdAt: '2016-12-29T10:53:54.000Z',
+      updatedAt: '2016-12-29T10:53:54.000Z',
+      count: 13
+    }
   }
 ];
 
@@ -107,9 +121,9 @@ const BlogItem = ({ image, text, meta }) => (
 );
 
 BlogItem.propTypes = {
-  image: PropTypes.object,
-  text: PropTypes.object,
-  meta: PropTypes.object
+  image: PropTypes.object.isRequired,
+  text: PropTypes.object.isRequired,
+  meta: PropTypes.object.isRequired
 };
 
 class MetaData extends React.Component {
@@ -118,32 +132,44 @@ class MetaData extends React.Component {
     this.state = { updatedAt: props.updatedAt };
   }
 
-  props_formatted() {
-    var options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
-    };
-    var props_formatted = {
-      author: this.props.author,
-      createdAt: this.props.createdAt.format('MMMM Do YYYY, h:mm:ss a'),
-      updatedAt: this.state.updatedAt.toLocaleString("en-US", options)
-    };
-    return props_formatted;
-  }
-
   render() {
-    return React.createElement(MetaBox, this.props_formatted());
+    return React.createElement(
+      MetaBox,
+      {
+        author: this.props.author,
+        createdAt: dateFormattedMoment(this.props.createdAt),
+        updatedAt: dateFormattedJS(this.state.updatedAt)
+      }
+    );
   }
+}
+
+function dateFormattedMoment(
+  dateStringISO,
+  format = 'MMMM Do YYYY, h:mm:ss a'
+) {
+  return moment(dateStringISO).format(format);
+}
+
+function dateFormattedJS(
+  dateStringISO,
+  format = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  },
+  locale = "en-US"
+) {
+  return new Date(dateStringISO).toLocaleString(locale, format);
 }
 
 MetaData.propTypes = {
   author: PropTypes.string,
-  createdAt: PropTypes.instanceOf(moment),
-  updatedAt: PropTypes.instanceOf(Date)
+  createdAt: PropTypes.string.isRequired,
+  updatedAt: PropTypes.string
 };
 
 MetaData.defaultProps = {
