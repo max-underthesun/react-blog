@@ -3,6 +3,13 @@ const { DOM, PropTypes } = React;
 const { bind, assign } = _;
 const update = React.addons.update;
 
+const titleStyle = {
+  border: '2px solid red',
+  margin: '10px',
+  padding: '10px',
+  color: 'blue',
+};
+
 const imageStyle = {
   border: '2px solid red',
   margin: '10px',
@@ -42,6 +49,7 @@ const items = [
   {
     id: 1,
     image: { src: "https://js.cx/gallery/img1-lg.jpg" },
+    title: "First title",
     text: {
       post:
       `Here is the post for a TextBox. Here is the post for a TextBox.
@@ -59,6 +67,7 @@ const items = [
   {
     id: 2,
     image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "300px", height: "240px" },
+    title: "Second title",
     text: { post: "Second post for a TextBox" },
     meta: {
       createdAt: '2016-12-29T10:53:54.000Z',
@@ -69,6 +78,7 @@ const items = [
   {
     id: 3,
     image: { },
+    title: "Third post",
     text: { },
     meta: {
       author: "Ivan Ivanich",
@@ -110,13 +120,25 @@ TextBox.defaultProps = {
   post: "** empty entry **"
 };
 
+// <<<<<<< 6d186702a728f0671c54695a7a6219dc6dde72b5
 // <<<<<<< 174f820e258792667e45ee76f009eb89fb729897
 // =======
-const BlogItem = ({ id, image, text, meta, like }) => (
+// const BlogItem = ({ id, image, text, meta, like }) => (
+// =======
+const TitleBox  = ({ title }) => (
+  DOM.div(
+    { style: titleStyle },
+    DOM.h3(null, title)
+  )
+);
+
+const BlogItem = ({ id, title, image, text, meta, like }) => (
+// >>>>>>> finish second task - 'add PieChart component'
   DOM.div(
     { style: blogItemStyle.outerWrapper },
     DOM.div(
       { style: blogItemStyle.postWrapper },
+      React.createElement(TitleBox, { title }),
       React.createElement(Image, image),
       React.createElement(TextBox, text)
     ),
@@ -265,7 +287,14 @@ class BlogPage extends React.Component {
 
   render() {
     const { items } = this.state;
-    return React.createElement(BlogList, { items, like: this.like });
+    return DOM.div(
+      null,
+      React.createElement(BlogList, { items, like: this.like }),
+      React.createElement(
+        PieChart,
+        { columns: _.map(items, (item) => ([item.title, item.meta.count])) }
+      )
+    );
   }
 }
 
@@ -280,6 +309,32 @@ const BlogList = ({ items, like }) => (
     )
   )
 );
+
+class PieChart extends React.Component {
+  componentDidMount() {
+    this.chart = c3.generate({
+      bindto: ReactDOM.findDOMNode(this.refs.chart),
+      // bindto: '#chart',
+      data: {
+        columns: this.props.columns,
+        type: "pie"
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.chart.destroy();
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.chart.load({ columns: newProps.columns });
+  }
+
+  render() {
+    return DOM.div({ ref: 'chart' });
+    // return DOM.div({ id: 'chart' });
+  }
+}
 
 ReactDOM.render(
   React.createElement(BlogPage),
