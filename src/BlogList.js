@@ -1,6 +1,7 @@
 // the final version
 const { DOM, PropTypes } = React;
 const { bind, assign } = _;
+const update = React.addons.update;
 
 const imageStyle = {
   border: '2px solid red',
@@ -39,6 +40,7 @@ const likeBoxStyle = {
 
 const items = [
   {
+    id: 1,
     image: { src: "https://js.cx/gallery/img1-lg.jpg" },
     text: {
       post:
@@ -55,6 +57,7 @@ const items = [
     }
   },
   {
+    id: 2,
     image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "300px", height: "240px" },
     text: { post: "Second post for a TextBox" },
     meta: {
@@ -64,6 +67,7 @@ const items = [
     }
   },
   {
+    id: 3,
     image: { },
     text: { },
     meta: {
@@ -106,6 +110,29 @@ TextBox.defaultProps = {
   post: "** empty entry **"
 };
 
+// <<<<<<< 174f820e258792667e45ee76f009eb89fb729897
+// =======
+const BlogItem = ({ id, image, text, meta, like }) => (
+  DOM.div(
+    { style: blogItemStyle.outerWrapper },
+    DOM.div(
+      { style: blogItemStyle.postWrapper },
+      React.createElement(Image, image),
+      React.createElement(TextBox, text)
+    ),
+    DOM.br(null),
+    React.createElement(MetaData, meta),
+    React.createElement(Like, { meta, id, like })
+  )
+);
+
+// BlogItem.propTypes = {
+//   image: PropTypes.object.isRequired,
+//   text: PropTypes.object.isRequired,
+//   meta: PropTypes.object.isRequired
+// };
+//
+// >>>>>>> finish first task - 'make Like component stateless'
 class MetaData extends React.Component {
   constructor(props) {
     super();
@@ -124,19 +151,19 @@ class MetaData extends React.Component {
   }
 }
 
-const BlogItem = ({ image, text, meta }) => (
-  DOM.div(
-    { style: blogItemStyle.outerWrapper },
-    DOM.div(
-      { style: blogItemStyle.postWrapper },
-      React.createElement(Image, image),
-      React.createElement(TextBox, text)
-    ),
-    DOM.br(null),
-    React.createElement(MetaData, meta),
-    React.createElement(Like, meta)
-  )
-);
+// const BlogItem = ({ image, text, meta }) => (
+//   DOM.div(
+//     { style: blogItemStyle.outerWrapper },
+//     DOM.div(
+//       { style: blogItemStyle.postWrapper },
+//       React.createElement(Image, image),
+//       React.createElement(TextBox, text)
+//     ),
+//     DOM.br(null),
+//     React.createElement(MetaData, meta),
+//     React.createElement(Like, meta)
+//   )
+// );
 
 BlogItem.propTypes = {
   image: PropTypes.shape(Image.propTypes).isRequired,
@@ -196,19 +223,17 @@ const MetaItem = (props) => (
 class Like extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { count: props.count };
-
     this.handleClick = bind(this.handleClick, this);
   }
 
   handleClick(e) {
-    this.setState({ count: this.state.count + 1 });
+    return this.props.like(this.props.id);
   }
 
   render() {
     return React.createElement(
       LikeBox,
-      { count: this.state.count, handleClick: this.handleClick }
+      { count: this.props.meta.count, handleClick: this.handleClick }
     );
   }
 }
@@ -226,21 +251,31 @@ class BlogPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items };
+
+    this.like = bind(this.like, this);
+  }
+
+  like(id) {
+    const { items } = this.state;
+    const index = items.findIndex(function(obj) { return obj.id == id; });
+    this.setState({
+      items: update(items, {[index]: {meta: {count: {$apply: function(x) {return x + 1;}}}}})
+    });
   }
 
   render() {
     const { items } = this.state;
-    return React.createElement(BlogList, { items });
+    return React.createElement(BlogList, { items, like: this.like });
   }
 }
 
-const BlogList = ({ items }) => (
+const BlogList = ({ items, like }) => (
   DOM.div(
     null,
     _.map(
       items,
-      (item, key) =>(
-        React.createElement(BlogItem, Object.assign({ key }, item))
+      (item) =>(
+        React.createElement(BlogItem, Object.assign({ key: item.id }, item, { like }))
       )
     )
   )
