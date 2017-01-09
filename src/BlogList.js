@@ -106,26 +106,6 @@ TextBox.defaultProps = {
   post: "** empty entry **"
 };
 
-const BlogItem = ({ image, text, meta }) => (
-  DOM.div(
-    { style: blogItemStyle.outerWrapper },
-    DOM.div(
-      { style: blogItemStyle.postWrapper },
-      React.createElement(Image, image),
-      React.createElement(TextBox, text)
-    ),
-    DOM.br(null),
-    React.createElement(MetaData, meta),
-    React.createElement(Like, meta)
-  )
-);
-
-BlogItem.propTypes = {
-  image: PropTypes.object.isRequired,
-  text: PropTypes.object.isRequired,
-  meta: PropTypes.object.isRequired
-};
-
 class MetaData extends React.Component {
   constructor(props) {
     super();
@@ -143,6 +123,26 @@ class MetaData extends React.Component {
     );
   }
 }
+
+const BlogItem = ({ image, text, meta }) => (
+  DOM.div(
+    { style: blogItemStyle.outerWrapper },
+    DOM.div(
+      { style: blogItemStyle.postWrapper },
+      React.createElement(Image, image),
+      React.createElement(TextBox, text)
+    ),
+    DOM.br(null),
+    React.createElement(MetaData, meta),
+    React.createElement(Like, meta)
+  )
+);
+
+BlogItem.propTypes = {
+  image: PropTypes.shape(Image.propTypes).isRequired,
+  text: PropTypes.shape(TextBox.propTypes).isRequired,
+  meta: PropTypes.shape(MetaData.propTypes).isRequired
+};
 
 function dateFormattedMoment(
   dateStringISO,
