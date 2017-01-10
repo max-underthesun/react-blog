@@ -120,11 +120,6 @@ TextBox.defaultProps = {
   post: "** empty entry **"
 };
 
-// <<<<<<< 6d186702a728f0671c54695a7a6219dc6dde72b5
-// <<<<<<< 174f820e258792667e45ee76f009eb89fb729897
-// =======
-// const BlogItem = ({ id, image, text, meta, like }) => (
-// =======
 const TitleBox  = ({ title }) => (
   DOM.div(
     { style: titleStyle },
@@ -133,7 +128,6 @@ const TitleBox  = ({ title }) => (
 );
 
 const BlogItem = ({ id, title, image, text, meta, like }) => (
-// >>>>>>> finish second task - 'add PieChart component'
   DOM.div(
     { style: blogItemStyle.outerWrapper },
     DOM.div(
@@ -148,13 +142,6 @@ const BlogItem = ({ id, title, image, text, meta, like }) => (
   )
 );
 
-// BlogItem.propTypes = {
-//   image: PropTypes.object.isRequired,
-//   text: PropTypes.object.isRequired,
-//   meta: PropTypes.object.isRequired
-// };
-//
-// >>>>>>> finish first task - 'make Like component stateless'
 class MetaData extends React.Component {
   constructor(props) {
     super();
@@ -172,20 +159,6 @@ class MetaData extends React.Component {
     );
   }
 }
-
-// const BlogItem = ({ image, text, meta }) => (
-//   DOM.div(
-//     { style: blogItemStyle.outerWrapper },
-//     DOM.div(
-//       { style: blogItemStyle.postWrapper },
-//       React.createElement(Image, image),
-//       React.createElement(TextBox, text)
-//     ),
-//     DOM.br(null),
-//     React.createElement(MetaData, meta),
-//     React.createElement(Like, meta)
-//   )
-// );
 
 BlogItem.propTypes = {
   image: PropTypes.shape(Image.propTypes).isRequired,
