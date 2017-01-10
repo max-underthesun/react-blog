@@ -1,6 +1,14 @@
 // the final version
 const { DOM, PropTypes } = React;
 const { bind, assign } = _;
+const update = React.addons.update;
+
+const titleStyle = {
+  border: '2px solid red',
+  margin: '10px',
+  padding: '10px',
+  color: 'blue',
+};
 
 const imageStyle = {
   border: '2px solid red',
@@ -39,7 +47,9 @@ const likeBoxStyle = {
 
 const items = [
   {
+    id: 1,
     image: { src: "https://js.cx/gallery/img1-lg.jpg" },
+    title: "First title",
     text: {
       post:
       `Here is the post for a TextBox. Here is the post for a TextBox.
@@ -55,7 +65,9 @@ const items = [
     }
   },
   {
+    id: 2,
     image: { src: "https://js.cx/gallery/img2-lg.jpg", width: "300px", height: "240px" },
+    title: "Second title",
     text: { post: "Second post for a TextBox" },
     meta: {
       createdAt: '2016-12-29T10:53:54.000Z',
@@ -64,7 +76,9 @@ const items = [
     }
   },
   {
+    id: 3,
     image: { },
+    title: "Third post",
     text: { },
     meta: {
       author: "Ivan Ivanich",
@@ -106,6 +120,28 @@ TextBox.defaultProps = {
   post: "** empty entry **"
 };
 
+const TitleBox  = ({ title }) => (
+  DOM.div(
+    { style: titleStyle },
+    DOM.h3(null, title)
+  )
+);
+
+const BlogItem = ({ id, title, image, text, meta, like }) => (
+  DOM.div(
+    { style: blogItemStyle.outerWrapper },
+    DOM.div(
+      { style: blogItemStyle.postWrapper },
+      React.createElement(TitleBox, { title }),
+      React.createElement(Image, image),
+      React.createElement(TextBox, text)
+    ),
+    DOM.br(null),
+    React.createElement(MetaData, meta),
+    React.createElement(Like, { meta, id, like })
+  )
+);
+
 class MetaData extends React.Component {
   constructor(props) {
     super();
@@ -123,20 +159,6 @@ class MetaData extends React.Component {
     );
   }
 }
-
-const BlogItem = ({ image, text, meta }) => (
-  DOM.div(
-    { style: blogItemStyle.outerWrapper },
-    DOM.div(
-      { style: blogItemStyle.postWrapper },
-      React.createElement(Image, image),
-      React.createElement(TextBox, text)
-    ),
-    DOM.br(null),
-    React.createElement(MetaData, meta),
-    React.createElement(Like, meta)
-  )
-);
 
 BlogItem.propTypes = {
   image: PropTypes.shape(Image.propTypes).isRequired,
@@ -196,19 +218,17 @@ const MetaItem = (props) => (
 class Like extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { count: props.count };
-
     this.handleClick = bind(this.handleClick, this);
   }
 
   handleClick(e) {
-    this.setState({ count: this.state.count + 1 });
+    return this.props.like(this.props.id);
   }
 
   render() {
     return React.createElement(
       LikeBox,
-      { count: this.state.count, handleClick: this.handleClick }
+      { count: this.props.meta.count, handleClick: this.handleClick }
     );
   }
 }
@@ -226,25 +246,68 @@ class BlogPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items };
+
+    this.like = bind(this.like, this);
+  }
+
+  like(id) {
+    const { items } = this.state;
+    const index = items.findIndex(function(obj) { return obj.id == id; });
+    this.setState({
+      items: update(items, {[index]: {meta: {count: {$apply: function(x) {return x + 1;}}}}})
+    });
   }
 
   render() {
     const { items } = this.state;
-    return React.createElement(BlogList, { items });
+    return DOM.div(
+      null,
+      React.createElement(BlogList, { items, like: this.like }),
+      React.createElement(
+        PieChart,
+        { columns: _.map(items, (item) => ([item.title, item.meta.count])) }
+      )
+    );
   }
 }
 
-const BlogList = ({ items }) => (
+const BlogList = ({ items, like }) => (
   DOM.div(
     null,
     _.map(
       items,
-      (item, key) =>(
-        React.createElement(BlogItem, Object.assign({ key }, item))
+      (item) =>(
+        React.createElement(BlogItem, Object.assign({ key: item.id }, item, { like }))
       )
     )
   )
 );
+
+class PieChart extends React.Component {
+  componentDidMount() {
+    this.chart = c3.generate({
+      bindto: ReactDOM.findDOMNode(this.refs.chart),
+      // bindto: '#chart',
+      data: {
+        columns: this.props.columns,
+        type: "pie"
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.chart.destroy();
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.chart.load({ columns: newProps.columns });
+  }
+
+  render() {
+    return DOM.div({ ref: 'chart' });
+    // return DOM.div({ id: 'chart' });
+  }
+}
 
 ReactDOM.render(
   React.createElement(BlogPage),
