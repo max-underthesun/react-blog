@@ -254,7 +254,12 @@ class BlogPage extends React.Component {
     const { items } = this.state;
     const index = items.findIndex(function(obj) { return obj.id == id; });
     this.setState({
-      items: update(items, {[index]: {meta: {count: {$apply: function(x) {return x + 1;}}}}})
+      items: update(
+        items,
+        {
+          [index]: { meta: { count: { $apply: function(x) { return x + 1; } } } }
+        }
+      )
     });
   }
 
